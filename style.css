@@ -1,0 +1,92 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+/* Using Flex to center the root */
+body {
+  background-image: linear-gradient(
+    to right top,
+    #051937,
+    #002a47,
+    #003c53,
+    #004e5b,
+    #0f5f60
+  );
+
+  display: flex;
+
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+body > p {
+  font-size: xx-large;
+  font-weight: 900;
+  font-family: "Raleway", sans-serif;
+  letter-spacing: 2px;
+  color: bisque;
+}
+
+/* Window for sandbox and playing around in */
+/* Flex Container */
+#root {
+  border: 3px solid grey;
+  background-color: black;
+
+  width: 1024px;
+  height: 576px;
+
+  display: flex;
+
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+
+  flex-wrap: wrap;
+  perspective: 800px;
+
+  overflow: hidden;
+}
+
+/* Container to keep all the squares */
+.container {
+  border: 3px solid blue;
+  padding: 5px;
+
+  display: flex;
+  justify-content: space-between;
+
+  transition: all 0.5s;
+  transform: rotateX(60deg) rotateZ(45deg);
+  -webkit-transform: rotateX(60deg) rotateZ(45deg);
+
+  /* columns to keep squares */
+  .column {
+    display: flex;
+
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Squares for the grids */
+  .square {
+    border: 3px solid green;
+    background-color: white;
+    text-align: center;
+
+    display: flex;
+
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    justify-content: center;
+  }
+}

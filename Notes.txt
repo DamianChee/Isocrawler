@@ -1,0 +1,59 @@
+/* =============================================================================
+
+  Minimum Viable Product (MVP)
+
+============================================================================= */
+
+A grid-based, isometric roguelite dungeon crawler
+
+- Premade maps and levels (3 floors)
+- Enemies and their AI
+  - Straight path towards player if in range
+- Highscore (Reach last floor and defeat as many enemies as possible)
+- Turn-based movement
+
+
+/* =============================================================================
+
+  Stretch Goals
+
+============================================================================= */
+
+- Procedurally generated floors/rooms/levels (infinite floors)
+- Add inventory
+- Add weapons
+- Add allies 
+  - Swarm towards enemies if in range
+  - Follow the player otherwise
+- Enemies
+  - Randomized number of enemies spawn based on floor/level
+- Add obstacles
+  - Traps
+
+
+/* =============================================================================
+
+  Super Stretch Goals
+
+============================================================================= */
+
+- Add skills
+  - Player skills/magic
+  - Ally exclusive magic
+  - Enemy exclusive attacks/magic
+- Fuse allies to weapons
+- Add random item generation
+- Enemies will flee if low health/personality
+  - Enemies will roam the floor
+  - Enemies can fight each other
+
+/* =============================================================================
+
+  I have too much time on my hands
+
+============================================================================= */
+
+- Minimap
+- 3D the map instead of 2.5D
+- Add depth (higher and lower elevation)
+- Add graphics to tiles, monsters, player, ally
