@@ -57,3 +57,14 @@ A grid-based, isometric roguelite dungeon crawler
 - 3D the map instead of 2.5D
 - Add depth (higher and lower elevation)
 - Add graphics to tiles, monsters, player, ally
+
+References:
+https://www.youtube.com/watch?v=KvSjJ-kdGio
+https://stackoverflow.com/questions/31577053/convert-cartesian-width-and-height-to-isometric
+https://gamedev.stackexchange.com/questions/94011/project-rotated-matrix-to-isometric-coordinate
+https://stackoverflow.com/questions/10506502/what-is-the-connection-between-an-isometric-angle-and-scale
+https://gamedev.stackexchange.com/questions/142784/how-do-you-transform-a-coordinate-system-from-cartesian-to-isometric
+https://gamedev.stackexchange.com/questions/160687/converting-2d-cartesian-coordinate-based-map-editor-to-rendering-isometric-view
+https://www.reddit.com/r/gamemaker/comments/83302a/help_isometric_diagonal_movement_question/
+
+my poor brain

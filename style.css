@@ -51,7 +51,7 @@ body > p {
   justify-content: center;
 
   flex-wrap: wrap;
-  perspective: 800px;
+  /* perspective: 800px; */
 
   overflow: hidden;
 }
@@ -64,9 +64,14 @@ body > p {
   display: flex;
   justify-content: space-between;
 
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+
   transition: all 0.5s;
-  transform: rotateX(60deg) rotateZ(45deg);
-  -webkit-transform: rotateX(60deg) rotateZ(45deg);
+  transform: perspective(2000px) rotateX(60deg) rotateZ(45deg);
+  -webkit-transform: perspective(2000px) rotateX(60deg) rotateZ(45deg);
 
   /* columns to keep squares */
   .column {
@@ -75,18 +80,44 @@ body > p {
     flex-direction: column;
     justify-content: space-between;
   }
+}
 
-  /* Squares for the grids */
-  .square {
-    border: 3px solid green;
-    background-color: white;
-    text-align: center;
+/* Squares for the grids */
+.square {
+  border: 3px solid green;
+  background-color: white;
+  text-align: center;
 
-    display: flex;
+  display: flex;
 
-    align-items: center;
-    align-content: center;
-    justify-items: center;
-    justify-content: center;
-  }
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+}
+
+.player {
+  border: 3px solid green;
+  background-color: teal;
+  text-align: center;
+
+  display: flex;
+  position: fixed;
+
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+
+  transition: all 0.5s;
+}
+
+.centerdot {
+  position: fixed;
+  top: 53%;
+  left: 49.5%;
+
+  border: 5px solid darkorange;
+  background-color: darkorange;
+  z-index: 100;
 }
