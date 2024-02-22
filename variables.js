@@ -13,10 +13,12 @@ const player = {
   AGI: 1,
   SPD: 1,
   position: { x: 0, y: 0, z: 0 },
+  grid: { x: 0, y: 0 },
 };
 
 const camera = {
   position: { x: 0, y: 0, z: 0 },
+  grid: { x: 0, y: 0 },
 };
 
 const body = document.querySelector("body");

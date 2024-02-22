@@ -1,9 +1,14 @@
-//
-// element = Element from querySelector
-// tx, ty, tz = TranslateX, TranslateY, TranslateZ
-// rx, ry, rz = RotateX, RotateY, RotateZ
-// WARNING: Function does NOT check whether element is empty or not
-//
+/*******************************************************************************
+ *
+ * Moves an element, true for isometric while false for normal CSS translation
+ *
+ * element = Element from querySelector
+ * tx, ty, tz = TranslateX, TranslateY, TranslateZ
+ * rx, ry, rz = RotateX, RotateY, RotateZ
+ * WARNING: Function does NOT check whether element is empty or not
+ *
+ ******************************************************************************/
+
 function moveIsometricElement(
   isometric = false,
   element,
@@ -31,6 +36,12 @@ function moveIsometricElement(
   }
 }
 
+/*******************************************************************************
+ *
+ * Move northwards (top-right direction / negative Y / next row, same column)
+ *
+ ******************************************************************************/
+
 function moveNorth() {
   camera.position.x -= isoXScale;
   camera.position.y += isoYScale;
@@ -43,8 +54,9 @@ function moveNorth() {
     camera.position.z
   );
 
-  // Northwards movement = negative Y-axis
   player.position.y -= 100 + 6;
+  player.grid.y -= 1;
+
   moveIsometricElement(
     false,
     playerElement,
@@ -52,7 +64,15 @@ function moveNorth() {
     player.position.y,
     player.position.z
   );
+
+  findGridCoordinates();
 }
+
+/*******************************************************************************
+ *
+ * Move southwards (bottom-left direction / positive Y / next row, same column)
+ *
+ ******************************************************************************/
 
 function moveSouth() {
   camera.position.x += isoXScale;
@@ -66,8 +86,9 @@ function moveSouth() {
     camera.position.z
   );
 
-  // Southwards movement = positive Y-axis
   player.position.y += 100 + 6;
+  player.grid.y += 1;
+
   moveIsometricElement(
     false,
     playerElement,
@@ -75,7 +96,14 @@ function moveSouth() {
     player.position.y,
     player.position.z
   );
+  findGridCoordinates();
 }
+
+/*******************************************************************************
+ *
+ * Move eastwards (bottom-right direction / positive X / next column, same row)
+ *
+ ******************************************************************************/
 
 function moveEast() {
   camera.position.x -= isoXScale;
@@ -90,8 +118,8 @@ function moveEast() {
     camera.position.z
   );
 
-  // Eastward movement = positive X-axis
   player.position.x += 100 + 6;
+  player.grid.x += 1;
 
   moveIsometricElement(
     false,
@@ -100,7 +128,14 @@ function moveEast() {
     player.position.y,
     player.position.z
   );
+  findGridCoordinates();
 }
+
+/*******************************************************************************
+ *
+ * Move westwards (top-left direction / negative X / next column, same row)
+ *
+ ******************************************************************************/
 
 function moveWest() {
   camera.position.x += isoXScale;
@@ -116,6 +151,7 @@ function moveWest() {
   );
 
   player.position.x -= 100 + 6;
+  player.grid.x -= 1;
 
   moveIsometricElement(
     false,
@@ -124,9 +160,44 @@ function moveWest() {
     player.position.y,
     player.position.z
   );
+
+  findGridCoordinates();
 }
 
+/*******************************************************************************
+ *
+ * Given X and Y coordinates, moves to that grid
+ *
+ ******************************************************************************/
+
+function moveTo(object, element, x, y) {}
+
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
+
+function findGridCoordinates() {
+  const offsetX = Math.ceil(world.row / 2 - 1);
+  const offsetY = Math.ceil(world.column / 2 - 1);
+
+  let currPositionX = Math.round(player.position.x / 100) + offsetX;
+  let currPositionY = Math.round(player.position.y / 100) + offsetY;
+
+  console.log(`Calculated - X: ${currPositionX} | Y: ${currPositionY}`);
+  console.log(`Player's - X: ${player.grid.x} | Y: ${player.grid.y}`);
+}
+
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
+
 function initializeWorldCoordinates() {
+  if (player.grid.x === 0 && player.grid.y === 0) return;
+
   // Center everything to middle
   camera.position.x = 0;
   camera.position.y = 0;
@@ -140,40 +211,24 @@ function initializeWorldCoordinates() {
     camera.position.z
   );
 
-  player.position.x = 0;
-  player.position.y = 0;
-  player.position.z = 0;
-
-  moveIsometricElement(
-    false,
-    playerElement,
-    player.position.x,
-    player.position.y,
-    player.position.z
-  );
+  // Center the player to the world
+  moveIsometricElement(false, playerElement);
 
   let adjustNorth = 0;
   let adjustWest = 0;
 
-  // calculate move north how many times
-  // check if row even or odd
-  if (world.row % 2) {
-    adjustNorth = world.row / 2 - 1;
-  } else {
-    adjustNorth = Math.ceil(world.row / 2 - 1);
-  }
-
-  // calculate move west how many times
-  // check if column even or odd
-  if (world.column % 2) {
-    adjustWest = world.column / 2 - 1;
-  } else {
-    adjustWest = world.Math.ceil(column / 2 - 1);
-  }
+  adjustNorth = Math.ceil(world.row / 2 - 1);
+  adjustWest = Math.ceil(world.column / 2 - 1);
 
   for (let i = 0; i < adjustNorth; ++i) moveNorth();
   for (let i = 0; i < adjustWest; ++i) moveWest();
 }
+
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
 
 function createGrid() {
   // Create/populate grid and player into the container
@@ -205,6 +260,12 @@ function createGrid() {
   console.log("Created Grid");
 }
 
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
+
 function deleteGrid() {
   while (containerElement.firstChild) {
     containerElement.removeChild(containerElement.firstChild);
@@ -212,6 +273,12 @@ function deleteGrid() {
   if (!containerElement.firstChild) console.log("Deleted Grid");
   else console.log("Error emptying grid");
 }
+
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
 
 function createPlayer() {
   const newPlayer = document.createElement("div");
@@ -222,6 +289,15 @@ function createPlayer() {
 
   // assign to playerElement variable for use across the game
   playerElement = newPlayer;
+
+  // North-South (Y-Axis - +) Columns
+  let worldCenterY = Math.ceil(world.column / 2 - 1);
+  // East-West (X-Axis + -) Rows
+  let worldCenterX = Math.ceil(world.row / 2 - 1);
+
+  player.grid.x = worldCenterX;
+  player.grid.y = worldCenterY;
+  console.log(`X: ${worldCenterX} | Y: ${worldCenterY}`);
 
   if (playerElement) console.log("Created Player");
   else console.log("Error creating Player");
