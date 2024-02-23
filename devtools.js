@@ -43,6 +43,8 @@ updateButton.addEventListener("click", function (event) {
   rotateX(60deg)
   rotateZ(45deg)
   `;
+
+  initializeGameCoordinates();
 });
 
 // window.addEventListener("keydown", function (event) {

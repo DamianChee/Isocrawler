@@ -4,64 +4,35 @@
 // Movement
 window.addEventListener("keydown", function (event) {
   if (event.code === "KeyW") {
-    // camera.position.x -= world.tile + 6;
-    // camera.position.y += world.tile / 2 - 3;
-    // camera.position.z += world.tile + 6;
-    // containerElement.style.transform = `
-    // perspective(2000px)
-    // translateX(${camera.position.x}px)
-    // translateY(${camera.position.y}px)
-    // translateZ(${camera.position.z}px)
-    // rotateX(60deg)
-    // rotateZ(45deg)
-    // `;
+    moveCameraNorth(); // Move the camera
+    moveEntityNorth(player, playerElement, baseMovement); // Move the player
 
-    moveNorth();
+    // Move enemies
+    // code here
   } else if (event.code === "KeyA") {
-    // camera.position.x += world.tile + 6;
-    // camera.position.y += world.tile / 2 - 3;
-    // camera.position.z += world.tile + 6;
-    // containerElement.style.transform = `
-    // perspective(2000px)
-    // translateX(${camera.position.x}px)
-    // translateY(${camera.position.y}px)
-    // translateZ(${camera.position.z}px)
-    // rotateX(60deg)
-    // rotateZ(45deg)
-    // `;
+    moveCameraWest(); // Move the camera
+    moveEntityWest(player, playerElement, baseMovement); // Move the player
 
-    moveWest();
+    // Move enemies
+    // code here
   } else if (event.code === "KeyS") {
-    // camera.position.x += world.tile + 6;
-    // camera.position.y -= world.tile / 2 - 3;
-    // camera.position.z -= world.tile + 6;
-    // containerElement.style.transform = `
-    // perspective(2000px)
-    // translateX(${camera.position.x}px)
-    // translateY(${camera.position.y}px)
-    // translateZ(${camera.position.z}px)
-    // rotateX(60deg)
-    // rotateZ(45deg)
-    // `;
+    moveCameraSouth(); // Move the camera
+    moveEntitySouth(player, playerElement, baseMovement); // Move the player
 
-    moveSouth();
+    // Move enemies
+    // code here
   } else if (event.code === "KeyD") {
-    // camera.position.x -= world.tile + 6;
-    // camera.position.y -= world.tile / 2 - 3;
-    // camera.position.z -= world.tile + 6;
-    // containerElement.style.transform = `
-    // perspective(2000px)
-    // translateX(${camera.position.x}px)
-    // translateY(${camera.position.y}px)
-    // translateZ(${camera.position.z}px)
-    // rotateX(60deg)
-    // rotateZ(45deg)
-    // `;
+    moveCameraEast(); // Move the camera
+    moveEntityEast(player, playerElement, baseMovement); // Move the player
 
-    moveEast();
+    // Move enemies
+    // code here
   } else if (event.code === "KeyR") {
-    initializeWorldCoordinates();
+    initializeGameCoordinates();
   }
 });
 
+initializeWorld(floor1Room1);
 createGrid();
+initializeGameCoordinates();
+initializeEntities();

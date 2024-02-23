@@ -121,3 +121,55 @@ body > p {
   background-color: darkorange;
   z-index: 100;
 }
+
+.wall {
+  border: 3px solid green;
+  background-color: black;
+  text-align: center;
+
+  display: flex;
+
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+}
+
+.enemy {
+  border: 3px solid green;
+  background-color: red;
+  text-align: center;
+
+  display: flex;
+
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+}
+
+.stairs {
+  border: 3px solid green;
+  background-color: grey;
+  text-align: center;
+
+  display: flex;
+
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+}
+
+.door {
+  border: 3px solid green;
+  background-color: brown;
+  text-align: center;
+
+  display: flex;
+
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+}

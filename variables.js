@@ -18,7 +18,6 @@ const player = {
 
 const camera = {
   position: { x: 0, y: 0, z: 0 },
-  grid: { x: 0, y: 0 },
 };
 
 const body = document.querySelector("body");
@@ -43,3 +42,5 @@ var isoZ = 45;
 // See above for the magic number I'm using
 var isoXScale = ((world.tile + 6) * 1.414213562373095) / 2;
 var isoYScale = (world.tile + 3) / 1.414213562373095 / 2;
+
+const baseMovement = world.tile + 6;
