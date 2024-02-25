@@ -55,6 +55,12 @@ function moveCameraNorth() {
   );
 }
 
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
+
 function moveEntityNorth(object, element, speed) {
   object.position.y -= speed;
   object.grid.y -= 1;
@@ -88,6 +94,12 @@ function moveCameraSouth() {
     camera.position.z
   );
 }
+
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
 
 function moveEntitySouth(object, element, speed) {
   object.position.y += speed;
@@ -124,6 +136,12 @@ function moveCameraEast() {
   );
 }
 
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
+
 function moveEntityEast(object, element, speed) {
   object.position.x += speed;
   object.grid.x += 1;
@@ -159,6 +177,12 @@ function moveCameraWest() {
   );
 }
 
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
+
 function moveEntityWest(object, element, speed) {
   object.position.x -= speed;
   object.grid.x -= 1;
@@ -181,11 +205,8 @@ function moveEntityWest(object, element, speed) {
  ******************************************************************************/
 
 function moveEntityTo(object, element, x, y) {
-  console.log(`${x} | ${y}`);
   const distanceX = x - object.grid.x;
   const distanceY = y - object.grid.y;
-
-  console.log(`${distanceX} | ${distanceY}`);
 
   if (distanceX > 0)
     for (let i = 0; i < distanceX; ++i)
@@ -201,12 +222,15 @@ function moveEntityTo(object, element, x, y) {
       moveEntityNorth(object, element, baseMovement);
 }
 
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
+
 function moveCameraTo(object, element, x, y) {
-  console.log(`${x} | ${y}`);
   const distanceX = x - object.grid.x;
   const distanceY = y - object.grid.y;
-
-  console.log(`${distanceX} | ${distanceY}`);
 
   if (distanceX > 0)
     for (let i = 0; i < distanceX; ++i)
@@ -234,8 +258,6 @@ function findGridCoordinates(object) {
 
   let currPositionX = Math.round(object.position.x / 100) + offsetX;
   let currPositionY = Math.round(object.position.y / 100) + offsetY;
-
-  console.log(`X: ${currPositionX} | Y: ${currPositionY}`);
 }
 
 /*******************************************************************************
@@ -247,6 +269,8 @@ function findGridCoordinates(object) {
 function initializeGameCoordinates() {
   if (player.grid.x === 0 && player.grid.y === 0) return;
   if (player.grid.x < 0 || player.grid.y < 0) return;
+
+  console.log(`Player X: ${player.grid.x}, | Y: ${player.grid.y}`);
 
   // center the camera to the world
   moveIsometricElement(true, containerElement, 0, 0, 0);
@@ -300,15 +324,24 @@ function createGrid() {
   console.log("Created Grid");
 }
 
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
+
 function initializeWorld(room) {
   world.map = room;
-  world.column = room.length;
+  world.column = room.length - 1;
   world.row = room[0].length;
-  world.size = room.length * room[0].length;
-
-  console.log(world.column);
-  console.log(world.row);
+  world.size = room.length - 1 * room[0].length;
 }
+
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
 
 function initializeEntities() {
   // Put all divs in container into an array
@@ -339,6 +372,56 @@ function initializeEntities() {
       }
     }
   }
+  console.log(`Player X: ${player.grid.x}, | Y: ${player.grid.y}`);
+}
+
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
+
+function removeEnemy(x, y) {
+  // Put all divs in container into an array
+  const arrayOfContainerDivs = [...containerElement.children];
+  const arrayOfSquares = [...arrayOfContainerDivs[x].children];
+
+  arrayOfSquares[y].classList.remove("enemy");
+}
+
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
+
+function checkNextGrid(currentGrid, nextGrid) {
+  // Floor and Spawn check
+  if (
+    world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 0 ||
+    world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 9
+  )
+    return 0;
+
+  // Wall check
+  if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 1)
+    return 1;
+
+  // Stairs check
+  if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 3)
+    return 3;
+  // Door check
+  if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 4)
+    return 4;
+  if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 5)
+    return 5;
+  if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 6)
+    return 6;
+  if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 7)
+    return 7;
+  // Enemy check
+  if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 8)
+    return 8;
 }
 
 /*******************************************************************************
@@ -378,8 +461,63 @@ function createPlayer() {
 
   player.grid.x = worldCenterX;
   player.grid.y = worldCenterY;
-  console.log(`X: ${worldCenterX} | Y: ${worldCenterY}`);
 
   if (playerElement) console.log("Created Player");
   else console.log("Error creating Player");
+}
+
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
+
+// function createEnemy(x, y) {
+//   const enemyElement = document.createElement("div");
+//   enemyElement.classList.add("enemy");
+//   enemyElement.style.width = `${world.tile}px`;
+//   enemyElement.style.height = `${world.tile}px`;
+//   containerElement.appendChild(enemyElement);
+
+//   // North-South (Y-Axis - +)
+//   let worldCenterY = Math.ceil(world.row / 2 - 1);
+//   // East-West (X-Axis + -)
+//   let worldCenterX = Math.ceil(world.column / 2 - 1);
+
+//   const enemy = {
+//     position: { x: 0, y: 0, z: 0 },
+//     grid: { x: 0, y: 0 },
+//     element: enemyElement,
+//   };
+
+//   for (let i = enemy.grid.y; i > 0; --i)
+//     moveEntityNorth(enemy, enemyElement, baseMovement);
+//   for (let i = enemy.grid.x; i > 0; --i)
+//     moveEntityWest(enemy, enemyElement, baseMovement);
+
+//   moveEntityTo(enemy, enemyElement, x, y);
+
+//   // put reference to enemy in enemies array for use later
+//   enemies.push(enemy);
+// }
+
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
+
+function loadGame() {
+  initializeWorld(floor1Room1);
+  createGrid();
+  initializeGameCoordinates();
+  initializeEntities();
+}
+
+function loadNextRoom(room) {
+  deleteGrid();
+  initializeWorld(room);
+  createGrid();
+  initializeGameCoordinates();
+  initializeEntities();
 }

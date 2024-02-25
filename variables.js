@@ -4,17 +4,16 @@ const world = {
   row: 3,
   tile: 100,
   map: [[]],
+  score: 0,
 };
 
 const player = {
-  HP: 100,
-  STR: 1,
-  DEX: 1,
-  AGI: 1,
-  SPD: 1,
+  HP: 3,
   position: { x: 0, y: 0, z: 0 },
   grid: { x: 0, y: 0 },
 };
+
+const enemies = [];
 
 const camera = {
   position: { x: 0, y: 0, z: 0 },

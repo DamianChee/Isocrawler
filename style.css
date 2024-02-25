@@ -139,13 +139,17 @@ body > p {
   border: 3px solid green;
   background-color: red;
   text-align: center;
+  text-align: center;
 
   display: flex;
+  /* position: fixed; */
 
   align-items: center;
   align-content: center;
   justify-items: center;
   justify-content: center;
+
+  transition: all 0.5s;
 }
 
 .stairs {
