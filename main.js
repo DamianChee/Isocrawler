@@ -1,8 +1,6 @@
-// let moveAmount = calculateMovementDistance();
-// let moveAmount = squareSize;
-
-// Movement
+// Event Listeners
 window.addEventListener("keydown", function (event) {
+  // Key W (North)
   if (event.code === "KeyW") {
     // Perform next grid check
     const nextGrid = checkNextGrid(player.grid, { x: 0, y: -1 });
@@ -13,7 +11,9 @@ window.addEventListener("keydown", function (event) {
       moveCameraNorth(); // Move the camera
       moveEntityNorth(player, playerElement, baseMovement); // Move the player
     }
-  } else if (event.code === "KeyA") {
+  }
+  // Key A (West)
+  else if (event.code === "KeyA") {
     // Perform next grid check
     const nextGrid = checkNextGrid(player.grid, { x: -1, y: 0 });
     if (!nextGrid) {
@@ -23,7 +23,9 @@ window.addEventListener("keydown", function (event) {
       moveCameraWest(); // Move the camera
       moveEntityWest(player, playerElement, baseMovement); // Move the player
     }
-  } else if (event.code === "KeyS") {
+  }
+  // Key S (South)
+  else if (event.code === "KeyS") {
     // Perform next grid check
     const nextGrid = checkNextGrid(player.grid, { x: 0, y: 1 });
     if (!nextGrid) {
@@ -33,7 +35,9 @@ window.addEventListener("keydown", function (event) {
       moveCameraSouth(); // Move the camera
       moveEntitySouth(player, playerElement, baseMovement); // Move the player
     }
-  } else if (event.code === "KeyD") {
+  }
+  // Key D (East)
+  else if (event.code === "KeyD") {
     // Perform next grid check
     const nextGrid = checkNextGrid(player.grid, { x: 1, y: 0 });
     if (!nextGrid) {
@@ -43,71 +47,45 @@ window.addEventListener("keydown", function (event) {
       moveCameraEast(); // Move the camera
       moveEntityEast(player, playerElement, baseMovement); // Move the player
     }
-  } else if (event.code === "KeyR") {
-    initializeGameCoordinates();
-  } else if (event.code === "Space") {
+  }
+  // special dev key
+  else if (event.code === "KeyP") {
+    console.log("Clear localstorage");
+    clearHighscore();
+  }
+  // Key Space (Interact)
+  else if (event.code === "Space") {
     if (world.map[player.grid.x][player.grid.y] === 4) {
-      deleteGrid();
-      const block = document.createElement("div");
-      block.classList.add("rootBlock");
-      root.prepend(block);
+      deleteGrid(); // Delete grid for neatness
+      printWinScreen(); // Print win screen
+      clearInterval(interval); // Clear away timer interval
 
-      const win = document.createElement("div");
-      win.classList.add("winScreen");
-      win.innerText = `You won!
-                       Time taken: ${60 - gameTimer} seconds!
-                       Refresh the page to try again!`;
-      root.prepend(win);
-
-      clearInterval(interval);
+      // Update, print, save highscore (to localstorage)
+      updateHighscore();
+      printHighscore();
+      saveHighscore();
     }
-
-    // Move enemies
-    // enemyPathing();
   }
 });
-
-const instructions = document.createElement("div");
-instructions.classList = "instructions";
-instructions.innerText = `Movement - 'W A S D' keys
-                              
-                          End the game with 'Spacebar' when you're standing on the goal!
-
-                          Time remaining: ${gameTimer}
-
-                          White Tiles - Floor
-                          Black Tiles - Wall
-                          Brown Tile - Goal!`;
-
-body.prepend(instructions);
 
 const interval = setInterval(function () {
   if (gameTimer) {
     --gameTimer;
-    instructions.innerText = `Movement - 'W A S D' keys
-
-                              End the game with 'Spacebar' when you're standing on the goal!
-
-                              Time remaining: ${gameTimer}
-                              
-                              White Tiles - Floor
-                              Black Tiles - Wall
-                              Brown Tile - Goal!`;
+    printInstructions();
   } else {
     deleteGrid();
-    const block = document.createElement("div");
-    block.classList.add("rootBlock");
-    root.prepend(block);
-
-    const lose = document.createElement("div");
-    lose.classList.add("loseScreen");
-    lose.innerText = `You lost!
-                      Refresh the page to try again!`;
-    root.prepend(lose);
-
+    printLoseScreen();
     clearInterval(interval);
   }
 }, 1000);
 
-const randomMaze = Math.floor(Math.random() * mazes.length);
 loadGame(mazes[randomMaze]);
+if (localStorage.getItem("maze1Highscores") === null) {
+  console.log("Empty localstorage");
+  printInstructions();
+  printHighscore();
+} else {
+  loadHighscore();
+  printInstructions();
+  printHighscore();
+}

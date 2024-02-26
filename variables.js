@@ -1,3 +1,15 @@
+const body = document.querySelector("body");
+const root = document.querySelector("#root");
+const containerElement = document.querySelector(".container");
+const instructions = document.createElement("div");
+const highscores = document.createElement("div");
+
+instructions.classList = "instructions";
+highscores.classList = "highscores";
+
+body.prepend(instructions);
+body.prepend(highscores);
+
 const world = {
   column: 3,
   row: 3,
@@ -18,11 +30,27 @@ const camera = {
   position: { x: 0, y: 0, z: 0 },
 };
 
-const body = document.querySelector("body");
-const root = document.querySelector("#root");
-const containerElement = document.querySelector(".container");
 let playerElement;
 let gameTimer = 60;
+const randomMaze = Math.floor(Math.random() * mazes.length);
+
+let maze1Highscores = [
+  { playerName: "AAA", time: 30 },
+  { playerName: "BBB", time: 40 },
+  { playerName: "CCC", time: 50 },
+];
+
+let maze2Highscores = [
+  { playerName: "AAA", time: 30 },
+  { playerName: "BBB", time: 40 },
+  { playerName: "CCC", time: 50 },
+];
+
+let maze3Highscores = [
+  { playerName: "AAA", time: 30 },
+  { playerName: "BBB", time: 40 },
+  { playerName: "CCC", time: 50 },
+];
 
 // isometric degrees
 var isoX = 60;
