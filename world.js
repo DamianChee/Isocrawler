@@ -232,8 +232,6 @@ function clearHighscore() {
  ******************************************************************************/
 
 function printHighscore() {
-  console.log(randomMaze);
-  console.log(`${maze1Highscores[0].playerName}`);
   if (randomMaze === 0) {
     highscores.innerText = `Maze 1
                               
