@@ -1,253 +1,5 @@
 /*******************************************************************************
  *
- * Moves an element, true for isometric while false for normal CSS translation
- *
- * element = Element from querySelector
- * tx, ty, tz = TranslateX, TranslateY, TranslateZ
- * rx, ry, rz = RotateX, RotateY, RotateZ
- * WARNING: Function does NOT check whether element is empty or not
- *
- ******************************************************************************/
-
-function moveIsometricElement(
-  isometric = false,
-  element,
-  tx = 0,
-  ty = 0,
-  tz = 0
-) {
-  if (isometric) {
-    element.style.transform = `
-      perspective(2000px) 
-      translateX(${tx}px) 
-      translateY(${ty}px) 
-      translateZ(${tz}px) 
-      rotateX(${isoX}deg) 
-      rotateY(${isoY}deg) 
-      rotateZ(${isoZ}deg)
-    `;
-  } else {
-    element.style.transform = `
-      perspective(2000px) 
-      translateX(${tx}px) 
-      translateY(${ty}px) 
-      translateZ(${tz}px)
-    `;
-  }
-}
-
-/*******************************************************************************
- *
- * Move northwards (top-right direction / negative Y / next row, same column)
- *
- ******************************************************************************/
-
-function moveCameraNorth() {
-  camera.position.x -= isoXScale;
-  camera.position.y += isoYScale;
-  camera.position.z += isoXScale;
-  moveIsometricElement(
-    true,
-    containerElement,
-    camera.position.x,
-    camera.position.y,
-    camera.position.z
-  );
-}
-
-/*******************************************************************************
- *
- *
- *
- ******************************************************************************/
-
-function moveEntityNorth(object, element, speed) {
-  object.position.y -= speed;
-  object.grid.y -= 1;
-
-  moveIsometricElement(
-    false,
-    element,
-    object.position.x,
-    object.position.y,
-    object.position.z
-  );
-
-  findGridCoordinates(object);
-}
-
-/*******************************************************************************
- *
- * Move southwards (bottom-left direction / positive Y / next row, same column)
- *
- ******************************************************************************/
-
-function moveCameraSouth() {
-  camera.position.x += isoXScale;
-  camera.position.y -= isoYScale;
-  camera.position.z -= isoXScale;
-  moveIsometricElement(
-    true,
-    containerElement,
-    camera.position.x,
-    camera.position.y,
-    camera.position.z
-  );
-}
-
-/*******************************************************************************
- *
- *
- *
- ******************************************************************************/
-
-function moveEntitySouth(object, element, speed) {
-  object.position.y += speed;
-  object.grid.y += 1;
-
-  moveIsometricElement(
-    false,
-    element,
-    object.position.x,
-    object.position.y,
-    object.position.z
-  );
-
-  findGridCoordinates(object);
-}
-
-/*******************************************************************************
- *
- * Move eastwards (bottom-right direction / positive X / next column, same row)
- *
- ******************************************************************************/
-
-function moveCameraEast() {
-  camera.position.x -= isoXScale;
-  camera.position.y -= isoYScale;
-  camera.position.z -= isoXScale;
-
-  moveIsometricElement(
-    true,
-    containerElement,
-    camera.position.x,
-    camera.position.y,
-    camera.position.z
-  );
-}
-
-/*******************************************************************************
- *
- *
- *
- ******************************************************************************/
-
-function moveEntityEast(object, element, speed) {
-  object.position.x += speed;
-  object.grid.x += 1;
-
-  moveIsometricElement(
-    false,
-    element,
-    object.position.x,
-    object.position.y,
-    object.position.z
-  );
-
-  findGridCoordinates(object);
-}
-
-/*******************************************************************************
- *
- * Move westwards (top-left direction / negative X / next column, same row)
- *
- ******************************************************************************/
-
-function moveCameraWest() {
-  camera.position.x += isoXScale;
-  camera.position.y += isoYScale;
-  camera.position.z += isoXScale;
-
-  moveIsometricElement(
-    true,
-    containerElement,
-    camera.position.x,
-    camera.position.y,
-    camera.position.z
-  );
-}
-
-/*******************************************************************************
- *
- *
- *
- ******************************************************************************/
-
-function moveEntityWest(object, element, speed) {
-  object.position.x -= speed;
-  object.grid.x -= 1;
-
-  moveIsometricElement(
-    false,
-    element,
-    object.position.x,
-    object.position.y,
-    object.position.z
-  );
-
-  findGridCoordinates(object);
-}
-
-/*******************************************************************************
- *
- * Given X and Y coordinates, moves to that grid
- *
- ******************************************************************************/
-
-function moveEntityTo(object, element, x, y) {
-  const distanceX = x - object.grid.x;
-  const distanceY = y - object.grid.y;
-
-  if (distanceX > 0)
-    for (let i = 0; i < distanceX; ++i)
-      moveEntityEast(object, element, baseMovement);
-  if (distanceX < 0)
-    for (let i = 0; i < -distanceX; ++i)
-      moveEntityWest(object, element, baseMovement);
-  if (distanceY > 0)
-    for (let i = 0; i < distanceY; ++i)
-      moveEntitySouth(object, element, baseMovement);
-  if (distanceY < 0)
-    for (let i = 0; i < -distanceY; ++i)
-      moveEntityNorth(object, element, baseMovement);
-}
-
-/*******************************************************************************
- *
- *
- *
- ******************************************************************************/
-
-function moveCameraTo(object, element, x, y) {
-  const distanceX = x - object.grid.x;
-  const distanceY = y - object.grid.y;
-
-  if (distanceX > 0)
-    for (let i = 0; i < distanceX; ++i)
-      moveCameraEast(object, element, baseMovement);
-  if (distanceX < 0)
-    for (let i = 0; i < -distanceX; ++i)
-      moveCameraWest(object, element, baseMovement);
-  if (distanceY > 0)
-    for (let i = 0; i < distanceY; ++i)
-      moveCameraSouth(object, element, baseMovement);
-  if (distanceY < 0)
-    for (let i = 0; i < -distanceY; ++i)
-      moveCameraNorth(object, element, baseMovement);
-}
-
-/*******************************************************************************
- *
  *
  *
  ******************************************************************************/
@@ -266,26 +18,10 @@ function findGridCoordinates(object) {
  *
  ******************************************************************************/
 
-function initializeGameCoordinates() {
-  if (player.grid.x === 0 && player.grid.y === 0) return;
-  if (player.grid.x < 0 || player.grid.y < 0) return;
-
-  console.log(`Player X: ${player.grid.x}, | Y: ${player.grid.y}`);
-
-  // center the camera to the world
-  moveIsometricElement(true, containerElement, 0, 0, 0);
-
-  // Center the player to the world
-  moveIsometricElement(false, playerElement);
-
-  for (let i = player.grid.y; i > 0; --i) {
-    moveCameraNorth();
-    moveEntityNorth(player, playerElement, baseMovement);
-  }
-  for (let i = player.grid.x; i > 0; --i) {
-    moveCameraWest();
-    moveEntityWest(player, playerElement, baseMovement);
-  }
+function initializeWorld(room) {
+  world.map = room;
+  world.column = room.length;
+  world.row = room[0].length;
 }
 
 /*******************************************************************************
@@ -330,11 +66,37 @@ function createGrid() {
  *
  ******************************************************************************/
 
-function initializeWorld(room) {
-  world.map = room;
-  world.column = room.length - 1;
-  world.row = room[0].length;
-  world.size = room.length - 1 * room[0].length;
+function deleteGrid() {
+  while (containerElement.firstChild) {
+    containerElement.removeChild(containerElement.firstChild);
+  }
+  containerElement.style.width = 0;
+  containerElement.style.height = 0;
+  if (!containerElement.firstChild) console.log("Deleted Grid");
+  else console.log("Error emptying grid");
+}
+
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
+
+function initializeGameCoordinates() {
+  // center the camera to the world
+  moveIsometricElement(true, containerElement, 0, 0, 0);
+
+  // Center the player to the world
+  moveIsometricElement(false, playerElement);
+
+  for (let i = Math.ceil(world.column / 2); i > 0; --i) {
+    moveCameraNorth();
+    moveEntityNorth(player, playerElement, baseMovement);
+  }
+  for (let i = Math.ceil(world.row / 2); i > 0; --i) {
+    moveCameraWest();
+    moveEntityWest(player, playerElement, baseMovement);
+  }
 }
 
 /*******************************************************************************
@@ -365,14 +127,44 @@ function initializeEntities() {
         world.map[i][j] === 7
       )
         arrayOfSquares[j].classList.add("door");
-      if (world.map[i][j] === 8) arrayOfSquares[j].classList.add("enemy");
+      if (world.map[i][j] === 8) createEnemy(i, j);
+      // arrayOfSquares[j].classList.add("enemy");
       if (world.map[i][j] === 9) {
         moveCameraTo(player, containerElement, i, j);
         moveEntityTo(player, playerElement, i, j);
       }
     }
   }
-  console.log(`Player X: ${player.grid.x}, | Y: ${player.grid.y}`);
+}
+
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
+
+function createEnemy(x, y) {
+  const enemyElement = document.createElement("div");
+  enemyElement.classList.add("enemy");
+  enemyElement.style.width = `${world.tile}px`;
+  enemyElement.style.height = `${world.tile}px`;
+  containerElement.appendChild(enemyElement);
+
+  const enemy = {
+    position: { x: 0, y: 0, z: 0 },
+    grid: { x: x, y: y },
+    element: enemyElement,
+  };
+
+  for (let i = enemy.grid.y; i > 0; --i)
+    moveEntityNorth(enemy, enemyElement, baseMovement);
+  for (let i = enemy.grid.x; i > 0; --i)
+    moveEntityWest(enemy, enemyElement, baseMovement);
+
+  moveEntityTo(enemy, enemyElement, x, y);
+
+  // put reference to enemy in enemies array for use later
+  enemies.push(enemy);
 }
 
 /*******************************************************************************
@@ -383,10 +175,71 @@ function initializeEntities() {
 
 function removeEnemy(x, y) {
   // Put all divs in container into an array
-  const arrayOfContainerDivs = [...containerElement.children];
-  const arrayOfSquares = [...arrayOfContainerDivs[x].children];
+  // const arrayOfContainerDivs = [...containerElement.children];
+  // const arrayOfSquares = [...arrayOfContainerDivs[x].children];
 
-  arrayOfSquares[y].classList.remove("enemy");
+  // arrayOfSquares[y].classList.remove("enemy");
+  const newEnemies = [];
+  for (let i = 0; i < enemies.length; ++i) {
+    if (enemies[i].grid.x === x && enemies[i].grid.y === y) {
+      containerElement.removeChild(enemies[i].element);
+    } else {
+      newEnemies.push(enemies[i]);
+    }
+  }
+
+  enemies = newEnemies;
+}
+
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
+
+function enemyPathing() {
+  for (let i = 0; i < enemies.length; ++i) {
+    // player is north of enemy
+    if (
+      enemies[i].grid.y - player.grid.y < 3 &&
+      enemies[i].grid.y - player.grid.y > 0
+    ) {
+      const nextGrid = checkNextGrid(enemies[i].grid, { x: 0, y: -1 });
+      if (!nextGrid) {
+        moveEntityNorth(enemies[i], enemies[i].element, baseMovement);
+      }
+    }
+    // player is west of enemy
+    else if (
+      enemies[i].grid.x - player.grid.x < 3 &&
+      enemies[i].grid.x - player.grid.x > 0
+    ) {
+      const nextGrid = checkNextGrid(enemies[i].grid, { x: -1, y: 0 });
+      if (!nextGrid) {
+        moveEntityWest(enemies[i], enemies[i].element, baseMovement);
+      }
+    }
+    // player is south of enemy
+    else if (
+      enemies[i].grid.y - player.grid.y > -3 &&
+      enemies[i].grid.y - player.grid.y < 0
+    ) {
+      const nextGrid = checkNextGrid(enemies[i].grid, { x: 0, y: 1 });
+      if (!nextGrid) {
+        moveEntitySouth(enemies[i], enemies[i].element, baseMovement);
+      }
+    }
+    // player is east of enemy
+    else if (
+      enemies[i].grid.x - player.grid.x > -3 &&
+      enemies[i].grid.x - player.grid.x < 0
+    ) {
+      const nextGrid = checkNextGrid(enemies[i].grid, { x: 1, y: 0 });
+      if (!nextGrid) {
+        moveEntityEast(enemies[i], enemies[i].element, baseMovement);
+      }
+    }
+  }
 }
 
 /*******************************************************************************
@@ -397,45 +250,42 @@ function removeEnemy(x, y) {
 
 function checkNextGrid(currentGrid, nextGrid) {
   // Floor and Spawn check
-  if (
-    world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 0 ||
-    world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 9
-  )
-    return 0;
+  try {
+    // Enemy check
+    for (let i = 0; i < enemies.length; ++i) {
+      if (
+        enemies[i].grid.x === currentGrid.x + nextGrid.x &&
+        enemies[i].grid.y === currentGrid.y + nextGrid.y
+      ) {
+        return 8;
+      }
+    }
 
-  // Wall check
-  if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 1)
+    if (
+      world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 0 ||
+      world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 9
+    )
+      return 0;
+
+    // Wall check
+    if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 1)
+      return 1;
+
+    // Stairs check
+    if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 3)
+      return 3;
+    // Door check
+    if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 4)
+      return 4;
+    // if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 5)
+    //   return 0;
+    // if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 6)
+    //   return 0;
+    // if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 7)
+    //   return 0;
+  } catch (e) {
     return 1;
-
-  // Stairs check
-  if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 3)
-    return 3;
-  // Door check
-  if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 4)
-    return 4;
-  if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 5)
-    return 5;
-  if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 6)
-    return 6;
-  if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 7)
-    return 7;
-  // Enemy check
-  if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 8)
-    return 8;
-}
-
-/*******************************************************************************
- *
- *
- *
- ******************************************************************************/
-
-function deleteGrid() {
-  while (containerElement.firstChild) {
-    containerElement.removeChild(containerElement.firstChild);
   }
-  if (!containerElement.firstChild) console.log("Deleted Grid");
-  else console.log("Error emptying grid");
 }
 
 /*******************************************************************************
@@ -472,43 +322,8 @@ function createPlayer() {
  *
  ******************************************************************************/
 
-// function createEnemy(x, y) {
-//   const enemyElement = document.createElement("div");
-//   enemyElement.classList.add("enemy");
-//   enemyElement.style.width = `${world.tile}px`;
-//   enemyElement.style.height = `${world.tile}px`;
-//   containerElement.appendChild(enemyElement);
-
-//   // North-South (Y-Axis - +)
-//   let worldCenterY = Math.ceil(world.row / 2 - 1);
-//   // East-West (X-Axis + -)
-//   let worldCenterX = Math.ceil(world.column / 2 - 1);
-
-//   const enemy = {
-//     position: { x: 0, y: 0, z: 0 },
-//     grid: { x: 0, y: 0 },
-//     element: enemyElement,
-//   };
-
-//   for (let i = enemy.grid.y; i > 0; --i)
-//     moveEntityNorth(enemy, enemyElement, baseMovement);
-//   for (let i = enemy.grid.x; i > 0; --i)
-//     moveEntityWest(enemy, enemyElement, baseMovement);
-
-//   moveEntityTo(enemy, enemyElement, x, y);
-
-//   // put reference to enemy in enemies array for use later
-//   enemies.push(enemy);
-// }
-
-/*******************************************************************************
- *
- *
- *
- ******************************************************************************/
-
-function loadGame() {
-  initializeWorld(floor1Room1);
+function loadGame(maze) {
+  initializeWorld(maze);
   createGrid();
   initializeGameCoordinates();
   initializeEntities();

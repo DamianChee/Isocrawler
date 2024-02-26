@@ -112,16 +112,6 @@ body > p {
   transition: all 0.5s;
 }
 
-.centerdot {
-  position: fixed;
-  top: 53%;
-  left: 49.5%;
-
-  border: 5px solid darkorange;
-  background-color: darkorange;
-  z-index: 100;
-}
-
 .wall {
   border: 3px solid green;
   background-color: black;
@@ -142,7 +132,7 @@ body > p {
   text-align: center;
 
   display: flex;
-  /* position: fixed; */
+  position: fixed;
 
   align-items: center;
   align-content: center;
@@ -171,6 +161,64 @@ body > p {
   text-align: center;
 
   display: flex;
+
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+}
+
+.instructions {
+  border: 3px solid black;
+  background-color: white;
+
+  width: 15%;
+  height: 576px;
+  padding: 10px;
+
+  position: fixed;
+  display: flex;
+  left: 20px;
+}
+
+.rootBlock {
+  background-color: black;
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+  opacity: 0.1;
+  position: fixed;
+}
+
+.winScreen {
+  background-color: white;
+  width: 500px;
+  height: 500px;
+  padding: 5px;
+  opacity: 0.8;
+  z-index: 100;
+
+  display: flex;
+  position: fixed;
+
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+}
+
+.loseScreen {
+  background-color: white;
+  width: 500px;
+  height: 500px;
+  padding: 5px;
+  opacity: 0.8;
+  z-index: 100;
+
+  display: flex;
+  position: fixed;
 
   align-items: center;
   align-content: center;

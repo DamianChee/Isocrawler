@@ -1,5 +1,4 @@
 const world = {
-  size: 9,
   column: 3,
   row: 3,
   tile: 100,
@@ -13,15 +12,17 @@ const player = {
   grid: { x: 0, y: 0 },
 };
 
-const enemies = [];
+let enemies = [];
 
 const camera = {
   position: { x: 0, y: 0, z: 0 },
 };
 
 const body = document.querySelector("body");
+const root = document.querySelector("#root");
 const containerElement = document.querySelector(".container");
 let playerElement;
+let gameTimer = 60;
 
 // isometric degrees
 var isoX = 60;
