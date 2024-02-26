@@ -6,6 +6,17 @@ Isocrawler
 
 A project inspired by old isometric grid based games. Initially a product of love from Azure Dreams on the PSX, due to time constraints, settled for a labyrinth/maze puzzle game.
 
+### Instructions
+
+- Movement using 'W A S D' keys
+- Interact tiles under player using 'Spacebar'
+
+- White Tiles (Floor)
+- Black Tiles (Wall)
+- Grey Tiles (Bounce Pads / Directional block)
+- Blue Tiles (Teleporter Pads)
+- Brown Tiles (Goal)
+
 ## Technologies Used
 
 - HTML
