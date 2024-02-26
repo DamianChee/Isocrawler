@@ -125,24 +125,20 @@ body > p {
   justify-content: center;
 }
 
-.enemy {
+.door {
   border: 3px solid green;
-  background-color: red;
-  text-align: center;
+  background-color: brown;
   text-align: center;
 
   display: flex;
-  position: fixed;
 
   align-items: center;
   align-content: center;
   justify-items: center;
   justify-content: center;
-
-  transition: all 0.5s;
 }
 
-.stairs {
+.bounceNorth {
   border: 3px solid green;
   background-color: grey;
   text-align: center;
@@ -155,9 +151,48 @@ body > p {
   justify-content: center;
 }
 
-.door {
+.bounceWest {
   border: 3px solid green;
-  background-color: brown;
+  background-color: grey;
+  text-align: center;
+
+  display: flex;
+
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+}
+
+.bounceSouth {
+  border: 3px solid green;
+  background-color: grey;
+  text-align: center;
+
+  display: flex;
+
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+}
+
+.bounceEast {
+  border: 3px solid green;
+  background-color: grey;
+  text-align: center;
+
+  display: flex;
+
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+}
+
+.teleporterPad {
+  border: 3px solid green;
+  background-color: blue;
   text-align: center;
 
   display: flex;

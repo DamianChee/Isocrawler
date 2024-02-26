@@ -105,16 +105,15 @@ function initializeEntities() {
     // classes to each squares where needed
     for (let j = 0; j < world.row; ++j) {
       if (world.map[i][j] === 1) arrayOfSquares[j].classList.add("wall");
-      if (world.map[i][j] === 3) arrayOfSquares[j].classList.add("stairs");
-      if (
-        world.map[i][j] === 4 ||
-        world.map[i][j] === 5 ||
-        world.map[i][j] === 6 ||
-        world.map[i][j] === 7
-      )
-        arrayOfSquares[j].classList.add("door");
-      if (world.map[i][j] === 8) createEnemy(i, j);
-      // arrayOfSquares[j].classList.add("enemy");
+      if (world.map[i][j] === 2) arrayOfSquares[j].classList.add("door");
+      if (world.map[i][j] === 3) {
+        arrayOfSquares[j].classList.add("teleporterPad");
+        teleporterPads.push({ grid: { x: i, y: j } });
+      }
+      if (world.map[i][j] === 4) arrayOfSquares[j].classList.add("bounceWest");
+      if (world.map[i][j] === 5) arrayOfSquares[j].classList.add("bounceSouth");
+      if (world.map[i][j] === 6) arrayOfSquares[j].classList.add("bounceEast");
+      if (world.map[i][j] === 8) arrayOfSquares[j].classList.add("bounceNorth");
       if (world.map[i][j] === 9) {
         moveCameraTo(player, containerElement, i, j);
         moveEntityTo(player, playerElement, i, j);
@@ -132,16 +131,6 @@ function initializeEntities() {
 function checkNextGrid(currentGrid, nextGrid) {
   // Floor and Spawn check
   try {
-    // Enemy check
-    for (let i = 0; i < enemies.length; ++i) {
-      if (
-        enemies[i].grid.x === currentGrid.x + nextGrid.x &&
-        enemies[i].grid.y === currentGrid.y + nextGrid.y
-      ) {
-        return 8;
-      }
-    }
-
     if (
       world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 0 ||
       world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 9
@@ -152,12 +141,27 @@ function checkNextGrid(currentGrid, nextGrid) {
     if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 1)
       return 1;
 
-    // Stairs check
+    // Goal check
+    if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 2)
+      return 2;
+
     if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 3)
       return 3;
-    // Door check
+
     if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 4)
       return 4;
+
+    if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 5)
+      return 5;
+
+    if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 6)
+      return 6;
+
+    if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 7)
+      return 7;
+
+    if (world.map[currentGrid.x + nextGrid.x][currentGrid.y + nextGrid.y] === 8)
+      return 8;
   } catch (e) {
     return 1;
   }
@@ -339,12 +343,13 @@ function updateHighscore() {
 
 function printInstructions() {
   instructions.innerText = `Movement - 'W A S D' keys
-                                
-                            End the game with 'Spacebar' when you're standing on the goal!
-  
+                            Interact with the brown and blue tiles with 'Spacebar'
+                            
                             White Tiles - Floor
                             Black Tiles - Wall
-                            Brown Tile - Goal!
+                            Grey Tiles - Bounce Pads (Directional block)
+                            Blue Tiles - Teleporter Pads (Teleports you to another teleporter randomly)
+                            Brown Tiles - Goal!
                             
                             
                             Time remaining: ${gameTimer}`;
@@ -385,6 +390,34 @@ function printLoseScreen() {
   lose.innerText = `You lost!
                     Refresh the page to try again!`;
   root.prepend(lose);
+}
+
+/*******************************************************************************
+ *
+ *
+ *
+ ******************************************************************************/
+
+function findAnotherTeleporter(x, y) {
+  let teleporterIndex = 0;
+  do {
+    teleporterIndex = Math.floor(Math.random() * teleporterPads.length);
+  } while (
+    teleporterPads[teleporterIndex].grid.x === x &&
+    teleporterPads[teleporterIndex].grid.y === y
+  );
+  moveCameraTo(
+    player,
+    containerElement,
+    teleporterPads[teleporterIndex].grid.x,
+    teleporterPads[teleporterIndex].grid.y
+  );
+  moveEntityTo(
+    player,
+    playerElement,
+    teleporterPads[teleporterIndex].grid.x,
+    teleporterPads[teleporterIndex].grid.y
+  );
 }
 
 /*******************************************************************************

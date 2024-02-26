@@ -3,6 +3,7 @@ const root = document.querySelector("#root");
 const containerElement = document.querySelector(".container");
 const instructions = document.createElement("div");
 const highscores = document.createElement("div");
+let playerElement;
 
 instructions.classList = "instructions";
 highscores.classList = "highscores";
@@ -19,20 +20,17 @@ const world = {
 };
 
 const player = {
-  HP: 3,
   position: { x: 0, y: 0, z: 0 },
   grid: { x: 0, y: 0 },
 };
-
-let enemies = [];
 
 const camera = {
   position: { x: 0, y: 0, z: 0 },
 };
 
-let playerElement;
-let gameTimer = 60;
 const randomMaze = Math.floor(Math.random() * mazes.length);
+
+let gameTimer = 60;
 
 let maze1Highscores = [
   { playerName: "AAA", time: 30 },
@@ -51,6 +49,8 @@ let maze3Highscores = [
   { playerName: "BBB", time: 40 },
   { playerName: "CCC", time: 50 },
 ];
+
+let teleporterPads = [];
 
 // isometric degrees
 var isoX = 60;
