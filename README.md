@@ -25,7 +25,7 @@ A project inspired by old isometric grid based games. Initially a product of lov
 
 ## Getting Started
 
-[Live Demo Available Here!](https://damianchee.github.io/Project1/)
+[Live Demo Available Here!](https://isocrawler.vercel.app/)
 
 ## Next Steps
 
